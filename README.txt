@@ -1,15 +1,3 @@
-Never forget maintenance again. Maintenance Monitor keeps track of all maintenance in and around your home and lets you know when it's time.
+Never forget maintenance again. Maintenance Monitor keeps track of all maintenance in and around your home: test the smoke detectors, clean the air conditioner filters, descale the coffee machine, service the boiler or clean the gutters. Choose from 25 item types with suggested tasks, and Homey reminds you when something is due soon, due or overdue, at a time you choose.
 
-Test the smoke detectors, clean the air conditioner filters, give the washing machine a hot cleaning programme, service the boiler, lubricate the 3D printer, clean the gutters: add your items once and Homey reminds you.
-
-- All in one place: 25 types of items with suggested tasks and intervals (smoke and CO detectors, washing machine, dryer, dishwasher, air conditioner, ventilation, boiler and heat pump, 3D printer, robot vacuum, coffee machine, pet and chicken supplies, cameras, solar panels, car, house and more).
-- By date or by usage: every 3 months, or link a Homey device and count running hours, the number of runs or a device counter. For example: "clean the drum after 30 washes or after 2 months, whichever comes first".
-- Follows what the device knows itself: brush and filter life of a robot vacuum, salt left in a water softener. Replacing or refilling marks the task done, and a smoke detector test can tick off its own task.
-- Signals from the device: water tank empty, dust bag full, a message on the appliance. The app finds them on your linked device; the task is due while the device reports it and done by itself when it is over.
-- Tap Done and the interval starts again; optionally Homey also resets the counter in the device itself.
-- Notifications at a time you choose when a task is due soon, due or overdue, plus an optional daily reminder while something is still open.
-- One overview device with a red dot when something needs attention, so your appliances don't appear twice in your device list.
-- A dashboard widget and Flow cards (with due date tags) to automate everything yourself.
-- A simple wizard to add items, in Homey's own look and feel, with the icon of the item type or of your own Homey device.
-
-Works on Homey Pro (2023 or later), Homey Pro mini and Homey Self-Hosted Server.
+Link a Homey device and tasks follow real usage: running hours, washes, a device counter, or what the device reports itself, such as brush life of a robot vacuum, salt in a water softener or an empty water tank. Tasks can even tick themselves off. One overview device, a dashboard widget and Flow cards complete the picture.

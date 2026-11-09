@@ -54,5 +54,9 @@
   "1.1.1": {
     "en": "Signals from the device have a wait time (default 10 minutes): the task only becomes due when the signal lasts that long, so emptying a tank yourself stays quiet.",
     "nl": "Signalen van het apparaat hebben een wachttijd (standaard 10 minuten): de taak wordt pas nodig als het signaal zo lang aanhoudt, zodat zelf een tank legen stil blijft."
+  },
+  "1.1.2": {
+    "en": "New images for the overview device and widget, own icon for the overview device, shorter description.",
+    "nl": "Nieuwe afbeeldingen voor het overzichtsapparaat en de widget, eigen pictogram voor het overzichtsapparaat, kortere beschrijving."
   }
 }
