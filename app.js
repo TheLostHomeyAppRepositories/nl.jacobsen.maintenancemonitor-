@@ -5,6 +5,7 @@ const { HomeyAPI } = require('homey-api');
 const ItemManager = require('./lib/items');
 const { severity, evaluateTask, formatDate } = require('./lib/schedule');
 const { suggestSource, suggestDeviceTasks } = require('./lib/suggest');
+const { findByName } = require('./lib/names');
 const { getCategory, getIconUri } = require('./lib/templates');
 
 const CHECK_INTERVAL_MS = 60 * 60 * 1000;
@@ -219,6 +220,13 @@ class MaintenanceMonitorApp extends Homey.App {
       .sort((a, b) => `${a.description}${a.name}`.localeCompare(`${b.description}${b.name}`));
   }
 
+  _taskByName(itemName, taskName) {
+    const found = findByName(this.items.getItems(), itemName, taskName);
+    if (found.error === 'item') throw new Error(this.homey.__('errors.item_named', { name: found.name }));
+    if (found.error === 'task') throw new Error(this.homey.__('errors.task_named', { name: found.name, item: found.item.name }));
+    return found;
+  }
+
   _splitTask(arg) {
     const [itemId, taskId] = String((arg && arg.id) || '').split('|');
     return { itemId, taskId };
@@ -270,6 +278,18 @@ class MaintenanceMonitorApp extends Homey.App {
       const { itemId, taskId } = this._splitTask(task);
       await this.items.snooze(itemId, taskId, days);
     });
+
+    // The same by name, so tags (e.g. Item and Task of a WHEN card) or variables can choose the task.
+    this.homey.flow.getActionCard('mark_task_done_by_name')
+      .registerRunListener(async ({ item, task }) => {
+        const found = this._taskByName(item, task);
+        await this.items.markDone(found.item.id, found.task.id);
+      });
+    this.homey.flow.getActionCard('snooze_task_by_name')
+      .registerRunListener(async ({ item, task, days }) => {
+        const found = this._taskByName(item, task);
+        await this.items.snooze(found.item.id, found.task.id, days);
+      });
 
     const increment = this.homey.flow.getActionCard('increment_counter');
     increment.registerArgumentAutocompleteListener('task', query => this._taskChoices(query, true));

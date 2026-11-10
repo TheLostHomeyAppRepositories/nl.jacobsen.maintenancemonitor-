@@ -58,5 +58,9 @@
   "1.1.2": {
     "en": "New images for the overview device and widget, own icon for the overview device, shorter description.",
     "nl": "Nieuwe afbeeldingen voor het overzichtsapparaat en de widget, eigen pictogram voor het overzichtsapparaat, kortere beschrijving."
+  },
+  "1.1.3": {
+    "en": "New action cards to mark a task done or postpone it by name, so tags (e.g. Item and Task of a WHEN card) or variables can choose the task. Thanks to Drako74 for the idea.",
+    "nl": "Nieuwe actiekaarten om een taak op naam af te vinken of uit te stellen, zodat tags (bijv. Onderdeel en Taak van een WANNEER-kaart) of variabelen de taak kiezen. Met dank aan Drako74 voor het idee."
   }
 }

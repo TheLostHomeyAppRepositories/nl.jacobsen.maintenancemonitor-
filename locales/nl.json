@@ -30,7 +30,9 @@
     "task_not_found": "Taak niet gevonden",
     "item_not_found": "Onderdeel niet gevonden",
     "not_a_counter": "Deze taak heeft geen teller",
-    "name_required": "Geef het onderdeel een naam"
+    "name_required": "Geef het onderdeel een naam",
+    "item_named": "Onderdeel '__name__' niet gevonden",
+    "task_named": "Taak '__name__' niet gevonden bij '__item__'"
   },
   "pair": {
     "title": "Onderdeel toevoegen",

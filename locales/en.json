@@ -30,7 +30,9 @@
     "task_not_found": "Task not found",
     "item_not_found": "Item not found",
     "not_a_counter": "This task has no counter",
-    "name_required": "Please enter a name"
+    "name_required": "Please enter a name",
+    "item_named": "Item '__name__' not found",
+    "task_named": "Task '__name__' not found for '__item__'"
   },
   "pair": {
     "title": "Add item",

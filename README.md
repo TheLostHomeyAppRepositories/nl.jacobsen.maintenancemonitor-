@@ -117,8 +117,9 @@ When you link a device, Maintenance Monitor picks the best source automatically:
 
 ### Actions
 - **Mark [task] as done**
+- **Mark [task] of [item] as done** (by name) — fill in text, a variable or tags, e.g. *Item* and *Task* of a WHEN card; also accepts "Item / Task" in one field
 - **Mark all open tasks of [item] as done**
-- **Postpone [task] by [days] days**
+- **Postpone [task] by [days] days** — also by name
 - **Increase counter of [task] by [amount]**
 
 ### Example flow
