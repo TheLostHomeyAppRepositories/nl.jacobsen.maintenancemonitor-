@@ -132,4 +132,20 @@ assert.strictEqual(tick(dirty, 30 * M), 'event');
 assert.strictEqual(evaluateTask(dirty, '2026-11-05').status, 'due');
 assert.strictEqual(applyValue(dirty, 'installed', 40 * M), 'reset');
 
+// Level done while the device still reports 0 % (its counter not reset): no new 'due' until the level moves away.
+const sensor = { type: 'usage', threshold: 5, leadPercent: 10, source: { capability: 'sensor_left', metric: 'level', direction: 'down', units: '%' }, track: defaultTrack(), usage: 0 };
+applyValue(sensor, 0, 0);
+assert.strictEqual(evaluateTask(sensor, '2026-11-12').status, 'due');
+resetUsage(sensor, 1);
+assert.strictEqual(evaluateTask(sensor, '2026-11-12').status, 'ok');
+applyValue(sensor, 0, 2); // still 0 on the next poll
+assert.strictEqual(evaluateTask(sensor, '2026-11-12').status, 'ok');
+assert.strictEqual(applyValue(sensor, 100, 3), 'event'); // counter reset by the app right after Done: no second "done"
+applyValue(sensor, 0, 4 * H);
+resetUsage(sensor, 4 * H);
+assert.strictEqual(applyValue(sensor, 100, 6 * H), 'reset'); // reset in the device itself hours later: done by the device
+assert.strictEqual(sensor.track.ack, false);
+applyValue(sensor, 4, 7 * H);
+assert.strictEqual(evaluateTask(sensor, '2026-11-12').status, 'due');
+
 console.log('usage tests ok');
