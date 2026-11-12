@@ -57,7 +57,7 @@
             <span class="ha-icon" style="--icon:url('${tk.iconUri}')"></span>
             <div class="ha-txt"><div class="ha-task">${esc(tk.task)}</div><div class="ha-sub">${esc(tk.item)} · ${esc(when(tk))}</div></div>
             <svg class="ha-state" viewBox="0 0 24 24"><title>${esc(t('status.' + tk.status))}</title>${STATE_ICON[tk.status]}</svg>
-            ${ORDER.indexOf(tk.status) >= 2 ? `<button class="homey-button-secondary-small-shadow ha-done" data-item="${tk.itemId}" data-task="${tk.taskId}">${esc(t('widget.done'))}</button>` : ''}
+            ${ORDER.indexOf(tk.status) >= 1 ? `<button class="homey-button-secondary-small-shadow ha-done" data-item="${tk.itemId}" data-task="${tk.taskId}">${esc(t('widget.done'))}</button>` : ''}
           </div>`).join('') + (tasks.length > max ? `<div class="ha-more">${esc(t('widget.more', { n: tasks.length - max }))}</div>` : '');
       H.ready({ height: document.body.scrollHeight });
     }
