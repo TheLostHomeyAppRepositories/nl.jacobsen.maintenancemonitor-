@@ -66,5 +66,9 @@
   "1.1.4": {
     "en": "Fix: marking a task done that follows a value of the device (e.g. sensors at 0 %) no longer makes it due again right away while the device still reports the old value. Resetting the device counter after Done no longer gives a second notification. The widget's Done button now also shows for tasks that are due soon, so you can do them early.",
     "nl": "Opgelost: een taak die een waarde van het apparaat volgt (bijv. sensoren 0 %) wordt na Gedaan niet meteen weer nodig zolang het apparaat de oude waarde nog meldt. Het terugzetten van de teller in het apparaat na Gedaan geeft geen tweede melding meer. De Gedaan-knop in de widget staat nu ook bij taken die binnenkort nodig zijn, zodat je ze alvast kunt afvinken."
+  },
+  "1.1.5": {
+    "en": "The Done button in the widget now looks like the one in the settings. New app image with 20 different appliances.",
+    "nl": "De Gedaan-knop in de widget ziet er nu uit als die in de instellingen. Nieuwe app-afbeelding met 20 verschillende apparaten."
   }
 }
