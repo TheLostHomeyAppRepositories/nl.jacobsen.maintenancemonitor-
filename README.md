@@ -12,11 +12,12 @@ Test the smoke detectors, clean the air conditioner filters, give the washing ma
 
 - **All maintenance in one place** — 25 item types with suggested tasks and intervals
 - **By date or by usage** — every X days/weeks/months/years, or count running hours, the number of runs or a device counter of a linked Homey device; combine both ("after 30 washes or 2 months, whichever comes first")
-- **Notifications** when a task is due soon, due or overdue — each step exactly once
+- **What the device knows itself** — brush and filter life of a robot vacuum, salt in a water softener, an empty water tank, a message on the appliance; the app finds these on your linked device and tasks can tick themselves off
+- **Notifications** at a time you choose when a task is due soon, due or overdue — each step exactly once — plus an optional daily reminder while something is still open
 - **One overview device** with a red dot when something needs attention — your appliances don't appear twice in your device list
 - **Dashboard widget** with a *Done* button
 - **Flow cards** to automate everything yourself
-- **Wizard** to add items, in Homey's own look and feel
+- **Wizard** to add items, in Homey's own look and feel, with the icon of the item type or of your own Homey device
 - Dutch and English
 
 ---
@@ -34,8 +35,9 @@ Each item shows the icon of its type. Under *Item settings › Icon* you can pic
 ## Installation
 
 ### Via Homey App Store
-The app is currently in **test**. Install the test version via:
-**https://homey.app/a/nl.jacobsen.maintenancemonitor/test/**
+Install from the Homey App Store: **https://homey.app/a/nl.jacobsen.maintenancemonitor/**
+
+Want the newest features before they go live? The test version: https://homey.app/a/nl.jacobsen.maintenancemonitor/test/
 
 Requires Homey Pro (2023 or later), Homey Pro mini or Homey Self-Hosted Server, firmware 12.2.0 or newer.
 
@@ -52,10 +54,11 @@ npm test            # Unit tests for the date and usage logic
 
 ## Getting started
 
-1. Open **Homey → Settings → Apps → Maintenance Monitor → Configure**
+1. Open **Homey → Settings → Apps → Maintenance Monitor → Configure** (tab *Items*; notifications and backup are under the tab *Settings*)
 2. Tap **+ Add item**, choose the type, name and (optionally) the installation year and a Homey device to link
-3. Check the suggested tasks and adjust the intervals — the overview shows when each task is first due
-4. Optional: add the **Maintenance Monitor (overview)** device and the **Maintenance** widget to your dashboard
+3. Check the suggested tasks and adjust the intervals — the overview shows when each task is first due. With a linked device, signals the device reports itself are offered too
+4. Later, add more tasks per item with **+ Add task** (suggested, *From the device* or your own)
+5. Optional: add the **Maintenance Monitor (overview)** device and the **Maintenance** widget to your dashboard
 
 ---
 
@@ -75,6 +78,7 @@ npm test            # Unit tests for the date and usage logic
 | **Number of runs** | Same, with *off-delay* (pauses don't count as a new run) and a minimum run time | Washing machine: clean drum after 30 washes (status = *In use*) |
 | **Device counter** | Increase of a cumulative capability (kWh, cycles, …); resets of the device counter are handled | Litter-Robot: deep clean after 250 clean cycles |
 | **Value of the device** | The device reports what is left (or how full it is); due at a level you choose. When the value jumps back (replaced, refilled, emptied) the task is marked done | Robot vacuum: main brush at 5 % · Water softener: salt for 7 more days |
+| **Signal from the device** | Due while the device reports something (a status, an on/off alarm, a value below/above a limit) for longer than a wait time (default 10 min); marked done by itself when it is over | Robot vacuum: clean water tank low · dirty water tank full · Washing machine: message on the appliance |
 
 Usage tasks can be combined with a date: **whichever comes first**.
 
@@ -132,7 +136,7 @@ THEN  Send push notification: "Maintenance: [task] of [item]"
 
 ## Notifications
 
-Maintenance Monitor writes to the Homey timeline when a task becomes *due soon*, *due* or *overdue* — every step only once. Date-based notifications arrive at a time you choose (default 09:00); notifications from usage or a counter arrive right away. Optionally you get one daily reminder at that time while tasks are still due or overdue. Push notifications can be enabled in **Homey → Settings → Notifications → Maintenance Monitor**. Each step can be switched off in the app settings, and you choose after how many days a task counts as *overdue*.
+Maintenance Monitor writes to the Homey timeline when a task becomes *due soon*, *due* or *overdue* — every step only once. Date-based notifications arrive at a time you choose (default 09:00); notifications from usage, a counter or a device signal arrive right away. Optionally you get one daily reminder at that time while tasks are still due or overdue. Push notifications can be enabled in **Homey → Settings → Notifications → Maintenance Monitor**. Each step can be switched off in the app settings, and you choose after how many days a task counts as *overdue*.
 
 ---
 
@@ -140,7 +144,7 @@ Maintenance Monitor writes to the Homey timeline when a task becomes *due soon*,
 
 - Items and tasks are stored in the app settings; no cloud service is used
 - Linked devices are followed with the Homey Web API (`homey:manager:api` permission) via capability listeners; usage is saved immediately on start/stop and at most every 10 minutes while running
-- Status is evaluated every hour and on every change
+- Linked devices are also read every minute (missed updates are caught up); status is evaluated every hour and on every change
 - Backup and restore of all items as JSON in the app settings
 
 ---
