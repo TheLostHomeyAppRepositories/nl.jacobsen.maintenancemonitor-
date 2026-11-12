@@ -151,7 +151,7 @@ Maintenance Monitor writes to the Homey timeline when a task becomes *due soon*,
 
 ## Support
 
-Questions, ideas or bugs? Reply in the [Homey Community topic](https://community.homey.app/t/app-pro-maintenance-monitor-keep-track-of-all-maintenance-in-and-around-your-home/161164) or open an [issue](https://github.com/sanderjacobsen/nl.jacobsen.maintenancemonitor/issues).
+Questions, ideas or bugs? Reply in the [Homey Community topic](https://community.homey.app/t/app-pro-maintenance-monitor-keep-track-of-all-maintenance-in-and-around-your-home/161164) or open an [issue](https://github.com/sanderjacobsen/maintenancemonitor/issues).
 
 ---
 

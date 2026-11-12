@@ -80,10 +80,10 @@
     "large": "/assets/images/large.png",
     "xlarge": "/assets/images/xlarge.png"
   },
-  "source": "https://github.com/sanderjacobsen/nl.jacobsen.maintenancemonitor",
-  "homepage": "https://github.com/sanderjacobsen/nl.jacobsen.maintenancemonitor",
+  "source": "https://github.com/sanderjacobsen/maintenancemonitor",
+  "homepage": "https://github.com/sanderjacobsen/maintenancemonitor",
   "bugs": {
-    "url": "https://github.com/sanderjacobsen/nl.jacobsen.maintenancemonitor/issues"
+    "url": "https://github.com/sanderjacobsen/maintenancemonitor/issues"
   },
   "support": "https://community.homey.app/t/app-pro-maintenance-monitor-keep-track-of-all-maintenance-in-and-around-your-home/161164",
   "flow": {
