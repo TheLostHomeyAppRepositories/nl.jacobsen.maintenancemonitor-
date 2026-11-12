@@ -14,7 +14,13 @@
     .ha-task { font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ha-sub { font-size: 12px; line-height: 16px; color: var(--homey-text-color-light, #939496); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ha-state { flex: 0 0 auto; width: 20px; height: 20px; }
-    .ha-done { flex: 0 0 auto; }
+    /* Same look as the Done button in the app settings (Homey's primary button), defined here so it does not
+       depend on which button classes the widget styleguide has. */
+    .ha-done { all: unset; flex: 0 0 auto; box-sizing: border-box; height: 32px; padding: 0 16px; border-radius: 16px; cursor: pointer;
+      font-size: 14px; font-weight: var(--homey-font-weight-medium, 500); line-height: 32px; color: #fff;
+      background: linear-gradient(90deg, var(--homey-color-blue, #0082fa), #3fa9ff); box-shadow: 0 2px 6px rgba(0, 130, 250, .3);
+      -webkit-tap-highlight-color: transparent; }
+    .ha-done:active { opacity: .8; }
     .ha-empty { padding: 12px 0; text-align: center; color: var(--homey-text-color-light, #939496); font-size: 14px; }
     .ha-more { font-size: 12px; color: var(--homey-text-color-light, #939496); padding-top: 6px; }
   </style>
@@ -57,7 +63,7 @@
             <span class="ha-icon" style="--icon:url('${tk.iconUri}')"></span>
             <div class="ha-txt"><div class="ha-task">${esc(tk.task)}</div><div class="ha-sub">${esc(tk.item)} · ${esc(when(tk))}</div></div>
             <svg class="ha-state" viewBox="0 0 24 24"><title>${esc(t('status.' + tk.status))}</title>${STATE_ICON[tk.status]}</svg>
-            ${ORDER.indexOf(tk.status) >= 1 ? `<button class="homey-button-primary-small-shadow ha-done" data-item="${tk.itemId}" data-task="${tk.taskId}">${esc(t('widget.done'))}</button>` : ''}
+            ${ORDER.indexOf(tk.status) >= 1 ? `<button class="ha-done" data-item="${tk.itemId}" data-task="${tk.taskId}">${esc(t('widget.done'))}</button>` : ''}
           </div>`).join('') + (tasks.length > max ? `<div class="ha-more">${esc(t('widget.more', { n: tasks.length - max }))}</div>` : '');
       H.ready({ height: document.body.scrollHeight });
     }

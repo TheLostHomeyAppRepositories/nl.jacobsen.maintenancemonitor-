@@ -70,5 +70,9 @@
   "1.1.5": {
     "en": "The Done button in the widget now looks like the one in the settings. New app image with 20 different appliances.",
     "nl": "De Gedaan-knop in de widget ziet er nu uit als die in de instellingen. Nieuwe app-afbeelding met 20 verschillende apparaten."
+  },
+  "1.1.6": {
+    "en": "The Done button in the widget now really has the blue look of the settings, also on dashboards.",
+    "nl": "De Gedaan-knop in de widget heeft nu echt de blauwe stijl van de instellingen, ook op dashboards."
   }
 }
