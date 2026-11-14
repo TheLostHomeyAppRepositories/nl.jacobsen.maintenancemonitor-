@@ -74,5 +74,9 @@
   "1.1.6": {
     "en": "The Done button in the widget now really has the blue look of the settings, also on dashboards.",
     "nl": "De Gedaan-knop in de widget heeft nu echt de blauwe stijl van de instellingen, ook op dashboards."
+  },
+  "1.1.7": {
+    "en": "The widget no longer repeats its title (Homey already shows it above the widget).",
+    "nl": "De widget herhaalt zijn titel niet meer (Homey toont die al boven de widget)."
   }
 }
