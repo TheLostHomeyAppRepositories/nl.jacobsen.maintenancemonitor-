@@ -218,7 +218,9 @@
     "sig_now": "now: __value__",
     "sig_hint": "The task becomes due when the device reports this for longer than the wait time (notification right away, also outside the notification time) and marks itself done when it is over, e.g. when the tank is refilled. Emptying a tank yourself stays quiet this way.",
     "sig_hold": "Wait time (the signal must last this long)",
-    "sig_hold_short": "(for more than __min__ min)"
+    "sig_hold_short": "(for more than __min__ min)",
+    "sig_autoclear": "Tick off by itself when the device no longer reports it",
+    "sig_hint_manual": "The task stays due until you mark it done, also when the device no longer reports the signal (e.g. a robot vacuum reports low water only during a run)."
   },
   "widget": {
     "title": "Maintenance",

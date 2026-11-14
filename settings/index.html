@@ -338,7 +338,7 @@
       Object.assign(d, {
         metric: task.source.metric, srcCap: task.source.capability, op: task.source.condition && task.source.condition.op,
         cmpValue: task.source.condition && task.source.condition.value, offDelayMin: task.source.offDelayMin, minRunMin: task.source.minRunMin,
-        direction: task.source.direction || 'down', holdMin: task.source.holdMin ?? 10,
+        direction: task.source.direction || 'down', holdMin: task.source.holdMin ?? 10, autoClear: task.source.autoClear !== false,
       });
     }
     Object.assign(d, autoDraft(task.autoDone), { raId: task.resetAction ? task.resetAction.id : '' });
@@ -352,6 +352,7 @@
     if (d.type === 'usage' && d.metric === 'signal') {
       task.source = {
         capability: d.srcCap, metric: 'signal', condition: { op: d.op || 'true', value: d.cmpValue }, units: usageUnit(d, dev), holdMin: Number(d.holdMin ?? 10),
+        autoClear: d.autoClear !== false,
       };
       Object.assign(task, { threshold: 1, leadPercent: 0, combine: false });
     } else if (d.type === 'usage') {
@@ -366,7 +367,7 @@
     delete task.raId;
     // Template hints (usage/level suggestions) are not task fields.
     if (typeof task.usage === 'object') delete task.usage;
-    ['metric', 'srcCap', 'op', 'cmpValue', 'offDelayMin', 'minRunMin', 'direction', 'holdMin', 'adOn', 'adCap', 'adOp', 'adValue', 'level',
+    ['metric', 'srcCap', 'op', 'cmpValue', 'offDelayMin', 'minRunMin', 'direction', 'holdMin', 'autoClear', 'adOn', 'adCap', 'adOp', 'adValue', 'level',
       'status', 'dueDate', 'days', 'progress', 'amountStatus'].forEach(k => delete task[k]);
     return task;
   }
@@ -408,7 +409,9 @@
         ${cond}
         <label class="homey-form-label">${esc(t('usage.sig_hold'))}</label>
         <div class="ha-inline days"><input class="homey-form-input" type="number" inputmode="numeric" min="0" data-f="holdMin" value="${d.holdMin ?? 10}" /><span>${esc(t('usage.minutes'))}</span></div>
-        <p class="ha-sub" style="margin-top:8px">${esc(t('usage.sig_hint'))}</p>`;
+        <label class="homey-form-checkbox" style="margin-top:14px"><input class="homey-form-checkbox-input" type="checkbox" data-f="autoClear" ${d.autoClear !== false ? 'checked' : ''} />
+          <span class="homey-form-checkbox-checkmark"></span><span class="homey-form-checkbox-text">${esc(t('usage.sig_autoclear'))}</span></label>
+        <p class="ha-sub" style="margin-top:8px">${esc(t(d.autoClear !== false ? 'usage.sig_hint' : 'usage.sig_hint_manual'))}</p>`;
     }
     if (metric === 'level') {
       const caps = dev.capabilities.filter(c => c.type === 'number');
@@ -678,7 +681,7 @@
       else if (f === 'srcCap' && d.metric !== 'level') { const c = capOf(dev, d.srcCap); d.op = !c || c.type === 'boolean' ? 'true' : c.type === 'number' ? 'gt' : 'equals'; d.cmpValue = d.op === 'gt' ? 10 : ''; }
       if (f === 'adOn' && d.adOn && !d.adCap) { const c = dev && dev.capabilities.find(x => x.type === 'boolean'); if (c) Object.assign(d, { adCap: c.id, adOp: 'true' }); }
       if (f === 'adCap') { const c = capOf(dev, d.adCap); d.adOp = c && c.type === 'boolean' ? 'true' : 'equals'; d.adValue = ''; }
-      if (['type', 'metric', 'srcCap', 'combine', 'unit', 'adOn', 'adCap', 'adOp', 'adValue', 'op'].includes(f)) render();
+      if (['type', 'metric', 'srcCap', 'combine', 'unit', 'adOn', 'adCap', 'adOp', 'adValue', 'op', 'autoClear'].includes(f)) render();
       return;
     }
     if (!el.classList.contains('add-select') || !el.value) return;
@@ -692,6 +695,7 @@
         Object.assign(draft, {
           name: sug.name, type: 'usage', threshold: sug.threshold, leadPercent: sug.leadPercent, combine: false,
           metric: src.metric, srcCap: src.capability, op: src.condition ? src.condition.op : 'true', cmpValue: src.condition ? src.condition.value ?? '' : '', direction: src.direction || 'down',
+          autoClear: src.autoClear !== false,
         });
       }
     } else if (el.value.startsWith('tpl:')) {

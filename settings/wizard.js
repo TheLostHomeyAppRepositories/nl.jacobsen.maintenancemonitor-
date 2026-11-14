@@ -148,7 +148,7 @@ function MaintenanceWizard(root, deps) {
       tasks.push({
         key: null, custom: true, fromDevice: true, use: src.metric === 'signal', open: false, name: x.name, type: 'usage',
         metric: src.metric, srcCap: src.capability, op: src.condition ? src.condition.op : 'true', cmpValue: src.condition ? src.condition.value ?? '' : '',
-        direction: src.direction || 'down', threshold: x.threshold, leadPercent: x.leadPercent, combine: false,
+        direction: src.direction || 'down', autoClear: src.autoClear !== false, threshold: x.threshold, leadPercent: x.leadPercent, combine: false,
         every: 1, unit: 'years', leadDays: 7, last: 'today', lastDate: today,
       });
     }
@@ -412,6 +412,7 @@ function MaintenanceWizard(root, deps) {
         minRunMin: Number(tk.minRunMin ?? 1),
         units: unitLabel(tk),
         direction: tk.direction || 'down',
+        autoClear: tk.autoClear !== false,
       } : null,
       autoDone: MM.autoDoneFor(linked(), tk),
       resetAction: tk.level ? MM.findResetAction(linked(), tk.level.match) : null,

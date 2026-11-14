@@ -39,7 +39,7 @@ const button = { class: 'button', capabilities: [{ id: 'alarm_battery', title: '
 assert.strictEqual(suggestSource(button, 'hours').kind, null);
 
 // Maintenance signals of real devices (05-11).
-const dreame = { capabilities: [
+const dreame = { class: 'vacuumcleaner', capabilities: [
   { id: 'dreame_water_tank', title: 'Water Tank', type: 'enum', values: [{ id: 'installed', title: 'Installed' }, { id: 'not_installed', title: 'Not installed' }, { id: 'low_water', title: 'Low water' }, { id: 'no_water', title: 'No water' }] },
   { id: 'dreame_dirty_water_tank', title: 'Dirty Water Tank', type: 'enum', values: [{ id: 'installed', title: 'Installed' }, { id: 'not_installed_or_full', title: 'Not installed or full' }] },
   { id: 'dreame_dust_bag', title: 'Dust Bag', type: 'enum', values: [{ id: 'installed', title: 'Installed' }, { id: 'not_installed', title: 'Not installed' }, { id: 'full', title: 'Full' }] },
@@ -61,5 +61,8 @@ const aquacell = { capabilities: [
   { id: 'measure_salt_days_left', title: 'Dagen tot leeg', type: 'number', units: 'dagen' },
 ] };
 assert.deepStrictEqual(suggestDeviceTasks(aquacell).map(t => [t.key, t.threshold]), [['level:measure_salt_left', 10], ['level:measure_salt_days_left', 7]]);
+
+assert.strictEqual(tasks[0].source.autoClear, false); // clean water: stays due until marked done
+assert.strictEqual(tasks[1].source.autoClear, undefined); // dirty water tank: ticks off by itself
 
 console.log('suggest tests ok');

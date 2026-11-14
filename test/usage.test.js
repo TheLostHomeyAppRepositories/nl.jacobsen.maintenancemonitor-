@@ -148,4 +148,18 @@ assert.strictEqual(sensor.track.ack, false);
 applyValue(sensor, 4, 7 * H);
 assert.strictEqual(evaluateTask(sensor, '2026-11-12').status, 'due');
 
+// Not ticked off by itself: a robot vacuum reports "low water" only during a run and "installed" afterwards.
+const clean = { type: 'usage', threshold: 1, source: { capability: 'dreame_water_tank', metric: 'signal', holdMin: 0, autoClear: false, condition: { op: 'in', value: 'low_water,no_water' } } };
+applyValue(clean, 'installed', 0);
+assert.strictEqual(applyValue(clean, 'low_water', 1), 'event');
+assert.strictEqual(applyValue(clean, 'installed', 2), 'change'); // run finished: NOT done
+assert.strictEqual(evaluateTask(clean, '2026-11-14').status, 'due');
+resetUsage(clean, 3); // marked done by the user
+assert.strictEqual(evaluateTask(clean, '2026-11-14').status, 'ok');
+assert.strictEqual(applyValue(clean, 'low_water', 4), 'event'); // next time empty: due again
+assert.strictEqual(evaluateTask(clean, '2026-11-14').status, 'due');
+resetUsage(clean, 5); // done while still reported: quiet until it clears
+applyValue(clean, 'installed', 6);
+assert.strictEqual(evaluateTask(clean, '2026-11-14').status, 'ok');
+
 console.log('usage tests ok');
