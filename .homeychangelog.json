@@ -82,5 +82,9 @@
   "1.1.8": {
     "en": "Signal tasks: new option 'Tick off by itself when the device no longer reports it'. Off for e.g. a robot vacuum's clean water tank, which reports low water only during a run: the task then stays due until you mark it done.",
     "nl": "Signaaltaken: nieuwe optie 'Zelf afvinken als het apparaat het niet meer meldt'. Uit voor bijv. de schoonwatertank van een robotstofzuiger, die weinig water alleen tijdens een ronde meldt: de taak blijft dan nodig tot je hem afvinkt."
+  },
+  "1.1.9": {
+    "en": "Tidier image for the overview device.",
+    "nl": "Rustigere afbeelding voor het overzichtsapparaat."
   }
 }
