@@ -167,7 +167,9 @@
     "tab_settings": "Settings",
     "suggested": "Suggested",
     "from_device": "From the device (__device__)",
-    "from_device_hint": "The linked device reports __count__ maintenance signals itself: pick them under + Add task."
+    "from_device_hint": "The linked device reports __count__ maintenance signals itself: pick them under + Add task.",
+    "tab_todo": "To do",
+    "todo_empty": "Nothing to do: all tasks are fine."
   },
   "usage": {
     "link": "Link to a Homey device",

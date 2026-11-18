@@ -167,7 +167,9 @@
     "tab_settings": "Instellingen",
     "suggested": "Voorgesteld",
     "from_device": "Van het apparaat (__device__)",
-    "from_device_hint": "Het gekoppelde apparaat meldt zelf __count__ onderhoudssignalen: kies ze bij + Taak toevoegen."
+    "from_device_hint": "Het gekoppelde apparaat meldt zelf __count__ onderhoudssignalen: kies ze bij + Taak toevoegen.",
+    "tab_todo": "Te doen",
+    "todo_empty": "Niets te doen: alle taken zijn in orde."
   },
   "usage": {
     "link": "Koppelen aan Homey-apparaat",

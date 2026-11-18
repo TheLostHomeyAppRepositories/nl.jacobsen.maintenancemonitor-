@@ -86,5 +86,9 @@
   "1.1.9": {
     "en": "Tidier image for the overview device.",
     "nl": "Rustigere afbeelding voor het overzichtsapparaat."
+  },
+  "1.2.0": {
+    "en": "New tab 'To do' in the settings: all tasks that are due soon, due or overdue, most urgent first, with Done and Snooze.",
+    "nl": "Nieuw tabblad 'Te doen' in de instellingen: alle taken die bijna nodig, nodig of te laat zijn, de meest dringende bovenaan, met Gedaan en Uitstellen."
   }
 }

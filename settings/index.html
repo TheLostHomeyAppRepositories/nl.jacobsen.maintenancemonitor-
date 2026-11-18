@@ -15,7 +15,7 @@
       font-size: var(--homey-font-size-default); line-height: 24px; color: var(--homey-color-text); box-shadow: 0 0 0 1px var(--homey-color-line); }
     /* Tabs: Homey-style segmented control, stays on top while scrolling */
     .ha-tabbar { position: sticky; top: 0; z-index: 5; background: var(--homey-color-white); padding: 8px 0 10px; margin: 0 -2px 4px; }
-    .ha-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: var(--homey-border-radius); background: var(--homey-color-mono-05); }
+    .ha-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 4px; border-radius: var(--homey-border-radius); background: var(--homey-color-mono-05); }
     .ha-tabs button { all: unset; text-align: center; padding: 8px 0; border-radius: var(--homey-border-radius-small); cursor: pointer;
       font-size: var(--homey-font-size-default); font-weight: var(--homey-font-weight-medium); color: var(--homey-color-text-light); -webkit-tap-highlight-color: transparent; }
     .ha-tabs button.on { background: var(--homey-color-white); color: var(--homey-color-blue); box-shadow: 0 1px 3px rgba(0, 0, 0, .15); }
@@ -42,6 +42,8 @@
     .ha-bar span { display: block; height: 100%; background: var(--homey-color-blue); }
     .ha-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
     .ha-actions .ha-right { margin-left: auto; }
+    .ha-todo-item { display: flex; align-items: center; gap: 8px; font-size: var(--homey-font-size-small); color: var(--homey-color-text-light); margin-bottom: 4px; }
+    .ha-todo-item .ha-icon { width: 20px; height: 20px; }
 
     /* status icons (instead of text) */
     .ha-state { width: 24px; height: 24px; flex: 0 0 auto; }
@@ -139,13 +141,16 @@
 
   <div class="ha-tabbar">
     <div class="ha-tabs" role="tablist">
-      <button type="button" role="tab" data-tab="items" class="hy-nostyle on" data-i18n="settings.items"></button>
+      <button type="button" role="tab" data-tab="todo" class="hy-nostyle on" id="todoTab" data-i18n="settings.tab_todo"></button>
+      <button type="button" role="tab" data-tab="items" class="hy-nostyle" data-i18n="settings.items"></button>
       <button type="button" role="tab" data-tab="settings" class="hy-nostyle" data-i18n="settings.tab_settings"></button>
     </div>
-    <input class="homey-form-input" type="text" inputmode="search" enterkeyhint="search" id="search" autocomplete="off" />
+    <input class="homey-form-input hidden" type="text" inputmode="search" enterkeyhint="search" id="search" autocomplete="off" />
   </div>
 
-  <div id="tab-items">
+  <div id="tab-todo"><div id="todo"></div></div>
+
+  <div id="tab-items" class="hidden">
   <button class="homey-button-primary-shadow-full" id="addItem" style="margin-bottom:12px">+ <span data-i18n="settings.add_item"></span></button>
   <div id="items"></div>
   </div>
@@ -519,7 +524,29 @@
     return words.every(w => text.includes(w));
   }
 
+  // "To do": every task that is due soon, due or overdue, most urgent first.
+  function renderTodo() {
+    const open = items.flatMap(item => item.tasks.filter(tk => tk.status !== 'ok').map(task => ({ item, task })));
+    const urgency = ({ task }) => [-ORDER.indexOf(task.status), task.days ?? -Math.round((task.progress || 0) * 1000)];
+    open.sort((a, b) => { const x = urgency(a), y = urgency(b); return x[0] - y[0] || x[1] - y[1]; });
+    $('todoTab').textContent = open.length ? `${t('settings.tab_todo')} (${open.length})` : t('settings.tab_todo');
+    if (!open.length) { $('todo').innerHTML = `<div class="ha-card ha-pad ha-sub">${esc(t('settings.todo_empty'))}</div>`; return; }
+    $('todo').innerHTML = `<div class="ha-card">${open.map(({ item, task }) => {
+      const bar = task.type === 'usage' || task.type === 'counter' ? `<div class="ha-bar"><span style="width:${Math.min(100, Math.round((task.progress || 0) * 100))}%"></span></div>` : '';
+      return `<div class="ha-task" data-item="${item.id}" data-task="${task.id}">
+        <div class="ha-todo-item">${icon(item.iconUri)}<span>${esc(item.name)}</span></div>
+        <div class="line"><span class="title">${esc(task.name)}</span>${stateIcon(task.status)}</div>
+        <div class="meta">${esc(metaText(task, linkedDevice(item)))}</div>
+        ${bar}
+        <div class="ha-actions">
+          <button class="homey-button-primary-small-shadow" data-act="done">${esc(t('settings.done'))}</button>
+          <button class="homey-button-secondary-small-shadow" data-act="snooze">${esc(t('settings.snooze'))}</button></div>
+      </div>`;
+    }).join('').replace('<div class="ha-task"', '<div class="ha-task" style="border-top:none"')}</div>`;
+  }
+
   function render() {
+    renderTodo();
     if (!items.length) { $('items').innerHTML = `<div class="ha-card ha-pad ha-sub">${esc(t('settings.no_items'))}</div>`; return; }
     const shown = items.filter(matches);
     if (!shown.length) { $('items').innerHTML = `<div class="ha-card ha-pad ha-sub">${esc(t('settings.no_results', { query }))}</div>`; return; }
@@ -758,9 +785,10 @@
     $('overdue_after_days').addEventListener('change', () => H.set('overdue_after_days', Math.max(1, Number($('overdue_after_days').value) || 7)));
     $('search').placeholder = t('settings.search');
     $('search').addEventListener('input', () => { query = $('search').value.trim(); render(); });
-    // Tabs: items (with search) and settings (notifications, backup).
+    // Tabs: to do, items (with search) and settings (notifications, backup).
     const showTab = tab => {
       document.querySelectorAll('.ha-tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+      $('tab-todo').classList.toggle('hidden', tab !== 'todo');
       $('tab-items').classList.toggle('hidden', tab !== 'items');
       $('tab-settings').classList.toggle('hidden', tab !== 'settings');
       $('search').classList.toggle('hidden', tab !== 'items');
@@ -768,6 +796,7 @@
     };
     document.querySelectorAll('.ha-tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
     $('items').addEventListener('click', onClick);
+    $('todo').addEventListener('click', onClick);
     $('addItem').addEventListener('click', openWizard);
     $('items').addEventListener('input', onInput);
     $('items').addEventListener('change', onChange);
