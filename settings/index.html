@@ -141,16 +141,16 @@
 
   <div class="ha-tabbar">
     <div class="ha-tabs" role="tablist">
-      <button type="button" role="tab" data-tab="todo" class="hy-nostyle on" id="todoTab" data-i18n="settings.tab_todo"></button>
-      <button type="button" role="tab" data-tab="items" class="hy-nostyle" data-i18n="settings.items"></button>
+      <button type="button" role="tab" data-tab="items" class="hy-nostyle on" data-i18n="settings.items"></button>
+      <button type="button" role="tab" data-tab="todo" class="hy-nostyle" id="todoTab" data-i18n="settings.tab_todo"></button>
       <button type="button" role="tab" data-tab="settings" class="hy-nostyle" data-i18n="settings.tab_settings"></button>
     </div>
-    <input class="homey-form-input hidden" type="text" inputmode="search" enterkeyhint="search" id="search" autocomplete="off" />
+    <input class="homey-form-input" type="text" inputmode="search" enterkeyhint="search" id="search" autocomplete="off" />
   </div>
 
-  <div id="tab-todo"><div id="todo"></div></div>
+  <div id="tab-todo" class="hidden"><div id="todo"></div></div>
 
-  <div id="tab-items" class="hidden">
+  <div id="tab-items">
   <button class="homey-button-primary-shadow-full" id="addItem" style="margin-bottom:12px">+ <span data-i18n="settings.add_item"></span></button>
   <div id="items"></div>
   </div>
