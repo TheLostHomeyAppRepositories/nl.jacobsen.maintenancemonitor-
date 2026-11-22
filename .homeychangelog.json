@@ -90,5 +90,9 @@
   "1.2.0": {
     "en": "New tab 'To do' in the settings: all tasks that are due soon, due or overdue, most urgent first, with Done and Snooze.",
     "nl": "Nieuw tabblad 'Te doen' in de instellingen: alle taken die bijna nodig, nodig of te laat zijn, de meest dringende bovenaan, met Gedaan en Uitstellen."
+  },
+  "1.2.1": {
+    "en": "Reset action on the device is tried up to 3 times (cloud devices do not always answer the first time). Done while the device still reports a used-up level: no new reminder until its counter is reset. Widget shows the value of signal tasks (e.g. salt 20 %).",
+    "nl": "Resetactie op het apparaat wordt tot 3 keer geprobeerd (cloudapparaten reageren niet altijd de eerste keer). Gedaan terwijl het apparaat nog een opgebruikte waarde meldt: geen nieuwe melding tot de teller is gereset. Widget toont de waarde bij signaaltaken (bijv. zout 20 %)."
   }
 }

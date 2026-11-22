@@ -19,7 +19,7 @@
     "due_counter": "🩺 __item__: time for __task__.",
     "overdue_counter": "🩺 __item__: __task__ has been due for a while.",
     "auto_done": "🩺 __item__: __task__ was marked done automatically.",
-    "reset_failed": "🩺 __item__: __task__ was marked done, but '__action__' on the device failed. Please do it in the device's own app.",
+    "reset_failed": "🩺 __item__: __task__ was marked done, but '__action__' on the device failed after 3 attempts (__reason__). Please do it in the device's own app.",
     "reminder_one": "🩺 Reminder: 1 task still open: __tasks__.",
     "reminder_many": "🩺 Reminder: __count__ tasks still open: __tasks__.",
     "reminder_more": " and __count__ more",

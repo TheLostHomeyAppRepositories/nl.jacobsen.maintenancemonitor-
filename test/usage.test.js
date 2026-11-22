@@ -162,4 +162,31 @@ resetUsage(clean, 5); // done while still reported: quiet until it clears
 applyValue(clean, 'installed', 6);
 assert.strictEqual(evaluateTask(clean, '2026-11-14').status, 'ok');
 
+
+// Done while the device still reports a used-up level (its counter not reset): quiet until reset or threshold (22-11).
+{
+  const brush = {
+    type: 'usage', threshold: 5, leadPercent: 10,
+    source: { capability: 'dreame_side_brush_left', metric: 'level', direction: 'down', units: '%' },
+    track: { ...defaultTrack(), last: 14, ref: 100 },
+  };
+  assert.ok(levelProgress(brush) > 0.9);
+  resetUsage(brush, 1000);
+  assert.strictEqual(brush.track.quiet, true);
+  assert.strictEqual(levelProgress(brush), 0);
+  applyValue(brush, 13, 2000);
+  assert.strictEqual(levelProgress(brush), 0); // still quiet while it counts down
+  applyValue(brush, 100, 3000); // counter reset in the device's app
+  assert.strictEqual(brush.track.quiet, false);
+  assert.strictEqual(levelProgress(brush), 0);
+  const worn = { ...brush, track: { ...defaultTrack(), last: 14, ref: 100 } };
+  resetUsage(worn, 1000);
+  applyValue(worn, 5, 2000); // really worn again: due
+  assert.strictEqual(worn.track.quiet, false);
+  assert.strictEqual(levelProgress(worn), 1);
+  const fresh = { ...brush, track: { ...defaultTrack(), last: 100, ref: 100 } };
+  resetUsage(fresh, 1000); // done with the counter already reset: not quiet, counts down normally
+  assert.strictEqual(fresh.track.quiet, false);
+}
+
 console.log('usage tests ok');

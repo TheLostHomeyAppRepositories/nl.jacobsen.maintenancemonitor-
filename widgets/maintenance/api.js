@@ -21,6 +21,9 @@ module.exports = {
           dueDate: task.dueDate,
           progress: task.progress,
           type: task.type,
+          // Signal tasks: what the device reports now (e.g. salt 20 %), instead of a progress percentage.
+          value: task.source && task.source.metric === 'signal' && task.track && typeof task.track.last === 'number'
+            ? `${task.track.last}${task.source.units ? ` ${task.source.units}` : ''}` : null,
         });
       }
     }

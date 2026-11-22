@@ -44,6 +44,7 @@
     const t = (k, v) => H.__(k, v);
 
     function when(task) {
+      if (task.value) return task.value;
       if (task.days === null || task.days === undefined) return `${Math.round((task.progress || 0) * 100)}%`;
       if (task.days > 0) return t('device.in_days', { days: task.days });
       if (task.days === 0) return t('device.today');

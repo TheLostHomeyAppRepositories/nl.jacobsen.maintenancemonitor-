@@ -133,16 +133,26 @@ class MaintenanceMonitorApp extends Homey.App {
   // Done by the user: also run the chosen action on the linked device, e.g. reset its consumable counter.
   async runResetAction({ item, task }) {
     if (!item.link || !task.resetAction) return;
-    const api = await this.getApi();
-    try {
-      await api.flow.runFlowCardAction({ uri: `homey:device:${item.link.id}`, id: task.resetAction.id, args: {} });
-      this.log(`Ran "${task.resetAction.title}" for "${task.name}" of "${item.name}"`);
-    } catch (err) {
-      this.error(`Reset action failed for "${task.name}":`, err.message);
-      await this.homey.notifications.createNotification({
-        excerpt: this.homey.__('notify.reset_failed', { item: item.name, task: task.name, action: task.resetAction.title }),
-      }).catch(() => {});
+    // Cloud devices do not always answer the first time: try again after 20 s and after another minute.
+    const waits = [0, 20 * 1000, 60 * 1000];
+    let lastError;
+    for (const [attempt, wait] of waits.entries()) {
+      if (wait) await new Promise(resolve => this.homey.setTimeout(resolve, wait));
+      try {
+        const api = await this.getApi();
+        await api.flow.runFlowCardAction({ uri: `homey:device:${item.link.id}`, id: task.resetAction.id, args: {} });
+        this.log(`Ran "${task.resetAction.title}" for "${task.name}" of "${item.name}" (attempt ${attempt + 1})`);
+        return;
+      } catch (err) {
+        lastError = err;
+        this.error(`Reset action failed for "${task.name}" (attempt ${attempt + 1}):`, err.message);
+      }
     }
+    await this.homey.notifications.createNotification({
+      excerpt: this.homey.__('notify.reset_failed', {
+        item: item.name, task: task.name, action: task.resetAction.title, reason: lastError ? lastError.message : '',
+      }),
+    }).catch(() => {});
   }
 
   // Every "done" (app, widget, flow or device): flows can follow up, e.g. reset the counter in the device itself.
